@@ -1,16 +1,16 @@
 export default function cleanSet(set, startString) {
-  // If startString is empty or not a string, return an empty string
-  if (!set || !(set instanceof Set) || !startString || typeof startString !== 'string') {
+  const parts = [];
+  if (!set || !startString || !(set instanceof Set) || typeof startString !== 'string') {
     return '';
   }
+  for (const value of set.values()) {
+    if (typeof value === 'string' && value.startsWith(startString)) {
+      const valueSubStr = value.substring(startString.length);
 
-  // Filter and map the set values
-  const filteredValues = Array.from(set)
-    .filter(
-      (value) => typeof value === 'string' && value.startsWith(startString)
-    )
-    .map((value) => value.slice(startString.length));
-
-  // Join the filtered values with a hyphen
-  return filteredValues.join('-');
+      if (valueSubStr && valueSubStr !== value) {
+        parts.push(valueSubStr);
+      }
+    }
+  }
+  return parts.join('-');
 }
